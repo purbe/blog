@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import appwriteService from "../appwrite/config";
 import {Container, PostCard} from '../components/Index.js'
+import {useSelector} from "react-redux";
 
 function Home() {
     const [posts, setPosts] = useState([])
+    const { status } = useSelector((state) => state.auth);
 
     useEffect(() => {
         appwriteService.getPosts().then((posts) => {
             if (posts) {
                 setPosts(posts.documents)
-            }
+            }else setPosts([])
         })
-    }, [])
+    }, [status])
+
 
     if (posts.length === 0) {
         return (
@@ -20,7 +23,7 @@ function Home() {
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
-                                Login to read posts
+                                post are not available
                             </h1>
                         </div>
                     </div>
