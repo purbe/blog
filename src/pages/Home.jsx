@@ -3,17 +3,23 @@ import appwriteService from "../appwrite/config";
 import {Container, PostCard} from '../components/Index.js'
 import {useSelector} from "react-redux";
 
+
 function Home() {
     const [posts, setPosts] = useState([])
     const { status } = useSelector((state) => state.auth);
 
+
     useEffect(() => {
-        appwriteService.getPosts().then((posts) => {
-            if (posts) {
+        if(status){
+        appwriteService.getPosts().then(
+            (posts) => {
+                  if (posts) {
                 setPosts(posts.documents)
-            }else setPosts([])
-        })
-    }, [status])
+                  }
+            })
+        }
+        else setPosts([])
+    }, [])
 
 
     if (posts.length === 0) {
@@ -23,7 +29,7 @@ function Home() {
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
-                                post are not available
+                               please login to see or post are not available
                             </h1>
                         </div>
                     </div>
